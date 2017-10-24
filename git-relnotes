@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ "$1" = "-l" ]; then
+	curl -sk "https://github.com/git/git/releases" | awk -F'[<>v]' '/tag-name/ {print $4}'
+else
+	version="${1:-$(git version | cut -d' ' -f3)}"
+	curl -sk "https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/${version%%-*}.txt" | less
+fi
