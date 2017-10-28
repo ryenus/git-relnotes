@@ -2,6 +2,9 @@
 
 if [ "$1" = "-l" ]; then
 	curl -sk "https://github.com/git/git/releases" | awk -F'[<>v]' '/tag-name/ {print $4}'
+elif [ "$1" = "-L" ]; then
+	curl -sk "https://github.com/git/git/tree/master/Documentation/RelNotes/" \
+		| awk -F'[><]' '/\.txt</ {print substr($5,1,length($5) - 4)}' | sort -V | column -x
 else
 	version="${1:-$(git version | cut -d' ' -f3)}"
 	curl -sk "https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/${version%%-*}.txt" | less
