@@ -7,5 +7,5 @@ elif [ "$1" = "-L" ]; then
 		| awk -F'[><]' '/\.txt</ {print substr($5,1,length($5) - 4)}' | sort -V | column -x
 else
 	version="${1:-$(git version | cut -d' ' -f3)}"
-	curl -sk "https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/${version%%-*}.txt" | less
+	curl -sk "https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/${version%%-*}.txt" | less -w
 fi
