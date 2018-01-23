@@ -19,6 +19,8 @@ The release notes are fetched from https://github.com/git/git/tree/master/Docume
 
 * Show the release notes for a given version
 
+	`git relnotes v2.14`
+
 	`git relnotes 2.14.3`
 
 	`git relnotes 2.15.0-rc2`    *# Caveat: latest snapshot of upcoming v2.15.0 release notes.*
