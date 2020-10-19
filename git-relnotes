@@ -13,5 +13,5 @@ else
 	version="${version#v}"    # remove any leading 'v': v2.16 => 2.16
 	version="${version%%-*}"  # remove any RC version suffix: 2.16.0-rc1 => 2.16.0
 	[ "${version//[0-9]}" = "." ] && version="${version}.0"  # bashism, expand 2.16 => 2.16.0
-	curl -sk "https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/${version}.txt" | less -RwXj0 -+G -p '^ \* ' +g
+	curl -sk "https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/${version}.txt" | less -RwXj0 -+G -p '(?<=^ )\*(?= )' +ng
 fi
