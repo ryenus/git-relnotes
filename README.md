@@ -13,9 +13,13 @@ The release notes are fetched from https://github.com/git/git/tree/master/Docume
 
 	`git relnotes`
 
-* List recently released versions
+* List recently releases from https://github.com/git/git/releases
 
 	`git relnotes -l`
+
+* List all releases
+
+  `git relnotes -L`
 
 * Show the release notes for a given version
 
