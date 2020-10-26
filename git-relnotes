@@ -3,10 +3,10 @@
 set -e
 
 if [ "$1" = "-l" ]; then
-  curl -sk "https://github.com/git/git/releases" \
+  curl -s "https://github.com/git/git/releases" \
     | sed -n -E 's,.*"/git/git/releases/tag/v([-0-9.rc]+)".*,\1,p'
 elif [ "$1" = "-L" ]; then
-  curl -sk "https://github.com/git/git/tree/master/Documentation/RelNotes/" \
+  curl -s "https://github.com/git/git/tree/master/Documentation/RelNotes/" \
     | awk -F'[><]' '/\.txt</ {print substr($5,1,length($5) - 4)}' \
     | sort -V | column -x
 else
@@ -14,6 +14,6 @@ else
   version="${version#v}"    # remove any leading 'v': v2.16 => 2.16
   version="${version%%-*}"  # remove any RC version suffix: 2.16.0-rc1 => 2.16.0
   [ "${version//[0-9]}" = "." ] && version="${version}.0"  # bashism, expand 2.16 => 2.16.0
-  curl -sk "https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/${version}.txt" \
+  curl -s "https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/${version}.txt" \
     | less -NRwXj9 -p '(?<=^ )\*(?= )' +jgn
 fi
