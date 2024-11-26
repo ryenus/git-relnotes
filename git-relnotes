@@ -1,19 +1,21 @@
 #!/bin/bash
 
 set -e
+repo='https://github.com/git/git'
 
 if [ "$1" = "-l" ]; then
-  curl -s "https://github.com/git/git/releases" \
+  curl -s "${repo}/tags" \
     | sed -n -E 's,.*"/git/git/releases/tag/v([-0-9.rc]+)".*,\1,p'
 elif [ "$1" = "-L" ]; then
-  curl -s "https://github.com/git/git/tree/master/Documentation/RelNotes/" \
-    | awk -F'[><]' '/\.txt</ {print substr($5,1,length($5) - 4)}' \
+  curl -s -H 'Accept: application/json' "${repo}/tree/master/Documentation/RelNotes/" \
+    | jq -r '.payload.tree.items[].name | sub("[.]txt$";"")' \
     | sort -V | column -x
 else
   version="${1:-$(git version | cut -d' ' -f3)}"
   version="${version#v}"    # remove any leading 'v': v2.16 => 2.16
   version="${version%%-*}"  # remove any RC version suffix: 2.16.0-rc1 => 2.16.0
   [ "${version//[0-9]}" = "." ] && version="${version}.0"  # bashism, expand 2.16 => 2.16.0
-  curl -sL "https://github.com/git/git/raw/master/Documentation/RelNotes/${version}.txt" \
-    | less -NRwXj9 -p '(?<=^ )\*(?= )' +jgn
+  # See https://github.com/gwsw/less/issues/135#issuecomment-1401170332
+  curl -sL "${repo}/raw/master/Documentation/RelNotes/${version}.txt" \
+    | command less -NRwXgj9 +r/'(?<=^ )\*(?= )'
 fi
